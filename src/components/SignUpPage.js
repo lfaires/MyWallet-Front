@@ -98,6 +98,7 @@ const Input = styled.input`
     border: none;
     ::placeholder{
         color: #000;
+        opacity: 0.8;
         font-size: 20px;
     }
 `
