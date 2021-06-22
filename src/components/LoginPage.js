@@ -14,7 +14,7 @@ export default function LoginPage() {
         setDisabled(true);
 
         const body = {email, password}
-        const request = axios.post("http://localhost:4000", body)
+        const request = axios.post("http://localhost:4000/", body)
 
         request.then( () => {
             history.push("/transactions")
@@ -22,7 +22,7 @@ export default function LoginPage() {
 
         request.catch( (error) => {
             setDisabled(false);
-            if (error.response.status === 400) {
+            if (error.response.status === 401) {
                 alert("Email ou senha incorretos!"); //mudar pra dialog box
                 return;
             }
