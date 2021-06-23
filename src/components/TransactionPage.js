@@ -4,17 +4,22 @@ import { BiExit } from 'react-icons/bi'
 import {IoAddCircleOutline, IoRemoveCircleOutline} from 'react-icons/io5'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import { useHistory } from 'react-router-dom'
+
 export default function TransactionPage() {
     const [transactions, setTransactions] = useState([])
     const [total, setTotal] = useState(0)
+    const history = useHistory();
+
     useEffect(() => getTransactions(),[])
+
     function getTransactions(){
         const request = axios.get('http://localhost:4000/transactions')
 
         request.then( response => {
-            const data = response.data
+
             setTransactions(response.data)
-            const values = data.map( item => {
+            const values = response.data.map( item => {
                 if(item.category === 'expense'){
                     item.value = -item.value
                 } 
@@ -26,11 +31,16 @@ export default function TransactionPage() {
         request.catch((error) => console.log(error))
     }
 
+    function logout() {
+        history.push("/")
+        //localStorage.removeItem('user');
+    }
+
     return (
         <Container>
             <Header>
                 <Greeting>Olá, Mimi</Greeting>
-                <ExitIcon/> 
+                <ExitIcon onClick={logout}/> 
             </Header>
             <Body>
                 <ContainerTransactions>
@@ -79,6 +89,7 @@ const Greeting = styled.p`
 const ExitIcon = styled(BiExit)`
     color: #fff;
     font-size: 30px;
+    cursor: pointer;
 `
 const Body = styled.div`
     display: flex;
