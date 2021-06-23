@@ -10,11 +10,13 @@ export default function TransactionPage() {
     const [transactions, setTransactions] = useState([])
     const [total, setTotal] = useState(0)
     const history = useHistory();
+    const token = JSON.parse(localStorage.user).token;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
 
     useEffect(() => getTransactions(),[])
 
     function getTransactions(){
-        const request = axios.get('http://localhost:4000/transactions')
+        const request = axios.get('http://localhost:4000/transactions', config)
 
         request.then( response => {
 
@@ -110,6 +112,7 @@ const ContainerTransactions = styled.ul`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: hidden;
 `
 const ContainerBalance = styled.div`
     display: flex;

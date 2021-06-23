@@ -10,13 +10,21 @@ export default function AddTransactionPage(){
     const [disabled, setDisabled] = useState(false);
     const history = useHistory()
     const typeText = (type === 'revenue' ? 'entrada' : 'saída');
+    const token = JSON.parse(localStorage.user).token;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
 
-    function saveTransaction(){
-        alert("ta funfando")
+    function saveTransaction(e){
+        e.preventDefault();
+        setDisabled(true);
+
         const body ={value, description}
-        const request = axios.post(`http://localhost:4000/add-transaction/${type}`, body)
+        const request = axios.post(`http://localhost:4000/add-transaction/${type}`, body, config)
         
-       
+       request.then( () => {
+           history.push('/transactions')
+       })
+
+       request.catch( () => alert("deu ruim"))
     }
 
     return (

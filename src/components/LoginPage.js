@@ -16,7 +16,9 @@ export default function LoginPage() {
         const body = {email, password}
         const request = axios.post("http://localhost:4000/", body)
 
-        request.then( () => {
+        request.then( (response) => {
+            const userSerialized = JSON.stringify(response.data);
+            localStorage.setItem("user",userSerial);
             history.push("/transactions")
         })
 
