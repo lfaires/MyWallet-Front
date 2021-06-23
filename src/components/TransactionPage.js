@@ -37,8 +37,13 @@ export default function TransactionPage() {
     }
 
     function logout() {
-        history.push("/")
-        localStorage.removeItem('token');
+        const request = axios.get('http://localhost:4000/sign-out', config)
+        
+        request.then( () => {
+            history.push("/")
+            localStorage.removeItem('token');
+        })
+        
     }
 
     return (

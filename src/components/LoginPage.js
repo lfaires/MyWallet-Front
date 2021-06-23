@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { AiOutlineEyeInvisible } from 'react-icons/ai'
 
 export default function LoginPage() {
     const [email, setEmail] = useState("")
@@ -19,7 +20,6 @@ export default function LoginPage() {
         request.then( (response) => {
             const userSerialized = JSON.stringify(response.data);
             localStorage.setItem("token",userSerialized);
-            console.log(response.data)
             history.push("/transactions")
         })
 
@@ -105,4 +105,7 @@ const Footer = styled.a`
     display: flex;
     justify-content: center;
     cursor: pointer;
+`
+const ClosedEyeIcon = styled(AiOutlineEyeInvisible)`
+    color: #000;
 `
