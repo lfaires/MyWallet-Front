@@ -18,7 +18,8 @@ export default function LoginPage() {
 
         request.then( (response) => {
             const userSerialized = JSON.stringify(response.data);
-            localStorage.setItem("user",userSerial);
+            localStorage.setItem("token",userSerialized);
+            console.log(response.data)
             history.push("/transactions")
         })
 

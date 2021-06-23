@@ -9,8 +9,9 @@ import { useHistory } from 'react-router-dom'
 export default function TransactionPage() {
     const [transactions, setTransactions] = useState([])
     const [total, setTotal] = useState(0)
+    const [user, setUser] = useState("")
     const history = useHistory();
-    const token = JSON.parse(localStorage.user).token;
+    const token = JSON.parse(localStorage.token)
     const config = { headers: { Authorization: `Bearer ${token}` } };
 
     useEffect(() => getTransactions(),[])
@@ -27,7 +28,9 @@ export default function TransactionPage() {
                 } 
                 return item.value
             })
+            if( values.length === 0) return
             setTotal(values.reduce( (acc,item) => acc+item)/100)
+            setUser(response.data[0].username)
         })
 
         request.catch((error) => console.log(error))
@@ -35,18 +38,19 @@ export default function TransactionPage() {
 
     function logout() {
         history.push("/")
-        //localStorage.removeItem('user');
+        localStorage.removeItem('token');
     }
 
     return (
         <Container>
             <Header>
-                <Greeting>Olá, Mimi</Greeting>
+                <Greeting>Olá, {user}</Greeting>
                 <ExitIcon onClick={logout}/> 
             </Header>
-            <Body>
-                <ContainerTransactions>
-                    {!transactions ? <Text>Não há registros de <br/> entrada ou saída</Text> : transactions.map( transaction => { 
+            <Body noTransactions={transactions.length === 0 ? true : false}>
+            {transactions.length ===0 ? <Text >Não há registros de <br/> entrada ou saída</Text> : <>
+            <ContainerTransactions >
+                    {transactions.map( transaction => { 
                     return <Transaction key={transaction.id}>
                         <DateDescription>
                             <Date>{dayjs(transaction.created_at).format("DD/MM")}</Date>
@@ -60,6 +64,7 @@ export default function TransactionPage() {
                     <Balance>SALDO</Balance>
                     <Total>{total.toFixed(2)}</Total>
                 </ContainerBalance>
+                </>}
             </Body>
             <Footer>
                 <AddRevenue onClick={() => history.push('/add-transaction/revenue')}>
@@ -96,7 +101,7 @@ const ExitIcon = styled(BiExit)`
 const Body = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: ${props => props.noTransactions ? 'center' : 'space-between'};
     text-align: center;
     background-color: #fff;
     margin-top: 22px;
@@ -107,11 +112,14 @@ const Body = styled.div`
 `
 const Text = styled.p`
     text-align: center;
+    color: #868686;
+    font-size: 20px;
 `
 const ContainerTransactions = styled.ul`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     overflow-y: hidden;
 `
 const ContainerBalance = styled.div`
