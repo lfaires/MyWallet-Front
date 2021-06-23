@@ -60,11 +60,11 @@ export default function TransactionPage() {
                 </ContainerBalance>
             </Body>
             <Footer>
-                <AddRevenue>
+                <AddRevenue onClick={() => history.push('/add-transaction/revenue')}>
                     <AddIcon />
                     <Title>Nova <br/> entrada</Title>
                 </AddRevenue>
-                <AddExpense>
+                <AddExpense onClick={() => history.push('/add-transaction/expense')}>
                     <RemoveIcon />
                     <Title>Nova <br/> saída</Title>
                 </AddExpense>
@@ -158,6 +158,7 @@ const AddRevenue = styled.div`
     background-color: #a328d6;
     border-radius: 5px;
     padding: 10px;
+    cursor:pointer;
 `
 const AddExpense = styled.div`
     display: flex;
@@ -168,6 +169,7 @@ const AddExpense = styled.div`
     background-color: #a328d6;
     border-radius: 5px;
     padding: 10px;
+    cursor:pointer;
 `
 const AddIcon = styled(IoAddCircleOutline)`
     color: #fff;

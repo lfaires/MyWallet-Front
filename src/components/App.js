@@ -4,6 +4,7 @@ import GlobalStyle from '../styles/GlobalStyle';
 import LoginPage from './LoginPage'
 import SignUpPage from './SignUpPage'
 import TransactionPage from './TransactionPage';
+import AddTransactionPage from './AddTransactionPage';
 
 export default function App() {
 
@@ -20,7 +21,10 @@ export default function App() {
                 </Route>
                 <Route path="/transactions" exact>
                     <TransactionPage />
-                </Route>       
+                </Route>
+                <Route path="/add-transaction/:type" exact>
+                    <AddTransactionPage />
+                </Route>        
             </Switch>
         </BrowserRouter>
         </>
