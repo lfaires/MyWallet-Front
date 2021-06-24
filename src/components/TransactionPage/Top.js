@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { BiExit } from 'react-icons/bi'
 import { useHistory } from 'react-router-dom'
 
-export default function Headers({user, config}){
+export default function Top({user, config}){
     const history = useHistory()
-        
+
     function logout() {
         const request = axios.post('http://localhost:4000/sign-out',{}, config)
  

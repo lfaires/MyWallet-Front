@@ -1,23 +1,22 @@
 import axios from 'axios'
 import styled from 'styled-components'
 
-import {IoAddCircleOutline, IoRemoveCircleOutline} from 'react-icons/io5'
 import { useEffect, useState } from 'react'
 
-import { useHistory } from 'react-router-dom'
 import DeleteBox from './DeleteBox'
-import Headers from './Headers'
+import Top from './Top'
 import Transactions from './Transactions'
 import Balance from './Balance'
+import Buttons from './Buttons'
 
 export default function TransactionPage() {
     const [transactions, setTransactions] = useState([])
     const [total, setTotal] = useState(0)
     const [user, setUser] = useState("")
     const [openDeleteBox, setOpenDeleteBox] = useState(false)
-    const history = useHistory();
     const { token } = localStorage
     const config = { headers: { Authorization: `Bearer ${token}` } };
+    const types = ['revenue', 'expense']
 
     useEffect(() => getTransactions(),[])
 
@@ -48,29 +47,24 @@ export default function TransactionPage() {
     return (
         <Container>
             {openDeleteBox ? <DeleteBox isOpen={openDeleteBox} setIsOpen={setOpenDeleteBox}/> : null}
-            <Headers user={user} config={config}/>
+            <Top user={user} config={config}/>
             <Body noTransactions={transactions.length === 0 ? true : false}>
-                {transactions.length ===0 ? <Text >Não há registros de <br/> entrada ou saída</Text> : <>
-                <ContainerTransactions >
-                    {transactions.map( transaction => {
-                        return <Transactions transaction={transaction} setIsOpen={setOpenDeleteBox} />
-                    })}
-                </ContainerTransactions>
-                <ContainerBalance>
-                    <Balance total={total}/>
-                </ContainerBalance>
-                    </>}
+                {transactions.length ===0 ? 
+                <Text >Não há registros de <br/> entrada ou saída</Text> : 
+                <>
+                    <ContainerTransactions >
+                        {transactions.map( transaction => {
+                            return <Transactions transaction={transaction} setIsOpen={setOpenDeleteBox} />
+                        })}
+                    </ContainerTransactions>
+                    <ContainerBalance>
+                        <Balance total={total}/>
+                    </ContainerBalance>
+                </>}
             </Body>
-            <Footer>
-                <AddRevenue onClick={() => history.push('/add-transaction/revenue')}>
-                    <AddIcon />
-                    <Title>Nova <br/> entrada</Title>
-                </AddRevenue>
-                <AddExpense onClick={() => history.push('/add-transaction/expense')}>
-                    <RemoveIcon />
-                    <Title>Nova <br/> saída</Title>
-                </AddExpense>
-            </Footer>
+            <Bottom>
+                {types.map( type => <Buttons category={type}/>)}
+            </Bottom>
         </Container>
     )
 }
@@ -78,7 +72,6 @@ export default function TransactionPage() {
 const Container = styled.div`
     margin: 25px;
 `
-
 const ContainerTransactions = styled.ul`
     display: flex;
     flex-direction: column;
@@ -86,7 +79,6 @@ const ContainerTransactions = styled.ul`
     align-items: center;
     overflow-y: scroll;
 `
-
 const Body = styled.div`
     display: flex;
     flex-direction: column;
@@ -104,48 +96,12 @@ const Text = styled.p`
     color: #868686;
     font-size: 20px;
 `
-
 const ContainerBalance = styled.div`
     display: flex;
     justify-content: space-between;
 `
-const Footer = styled.div`
+const Bottom = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-`
-const AddRevenue = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 48%;
-    height: 114px;
-    background-color: #a328d6;
-    border-radius: 5px;
-    padding: 10px;
-    cursor:pointer;
-`
-const AddExpense = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 48%;
-    height: 114px;
-    background-color: #a328d6;
-    border-radius: 5px;
-    padding: 10px;
-    cursor:pointer;
-`
-const AddIcon = styled(IoAddCircleOutline)`
-    color: #fff;
-    font-size: 22px;
-`
-const RemoveIcon = styled(IoRemoveCircleOutline)`
-    color: #fff;
-    font-size: 22px;
-`
-const Title = styled.p`
-    font-weight: 700;
-    font-size: 17px;
-    line-height: 20px;
 `
