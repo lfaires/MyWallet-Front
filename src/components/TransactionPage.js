@@ -11,7 +11,7 @@ export default function TransactionPage() {
     const [total, setTotal] = useState(0)
     const [user, setUser] = useState("")
     const history = useHistory();
-    const token = JSON.parse(localStorage.token)
+    const { token } = localStorage
     const config = { headers: { Authorization: `Bearer ${token}` } };
 
     useEffect(() => getTransactions(),[])
@@ -20,7 +20,10 @@ export default function TransactionPage() {
         const request = axios.get('http://localhost:4000/transactions', config)
 
         request.then( response => {
-
+            if(response.data.name){
+                setUser(response.data.name)
+                return
+            }
             setTransactions(response.data)
             const values = response.data.map( item => {
                 if(item.category === 'expense'){
@@ -28,6 +31,7 @@ export default function TransactionPage() {
                 } 
                 return item.value
             })
+
             if( values.length === 0) return
             setTotal(values.reduce( (acc,item) => acc+item)/100)
             setUser(response.data[0].username)
@@ -37,11 +41,11 @@ export default function TransactionPage() {
     }
 
     function logout() {
-        const request = axios.get('http://localhost:4000/sign-out', config)
-        
+        const request = axios.post('http://localhost:4000/sign-out',{}, config)
+ 
         request.then( () => {
-            history.push("/")
             localStorage.removeItem('token');
+            history.push("/")
         })
         
     }
@@ -61,13 +65,13 @@ export default function TransactionPage() {
                             <Date>{dayjs(transaction.created_at).format("DD/MM")}</Date>
                             <Description>{transaction.description}</Description>
                         </DateDescription>
-                        <Value type={transaction.category}>{(transaction.value/100).toFixed(2)}</Value>
+                        <Value type={transaction.category}>{((Math.abs(transaction.value)/100).toFixed(2)).toString().replace(".",",")}</Value>
                     </Transaction>
                     })}
                 </ContainerTransactions>
                 <ContainerBalance>
                     <Balance>SALDO</Balance>
-                    <Total>{total.toFixed(2)}</Total>
+                    <Total type={total >= 0 ? 'revenue' : ""}>{((Math.abs(total)).toFixed(2)).toString().replace(".",",")}</Total>
                 </ContainerBalance>
                 </>}
             </Body>
@@ -125,7 +129,7 @@ const ContainerTransactions = styled.ul`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    overflow-y: hidden;
+    overflow-y: scroll;
 `
 const ContainerBalance = styled.div`
     display: flex;
@@ -137,7 +141,7 @@ const Balance = styled.div`
     font-size: 17px;
 `
 const Total = styled.div`
-    color: green;
+    color: ${props => props.type === 'revenue' ? '#03ac00' : '#c70000'};
 `
 const DateDescription = styled.div`
     display: flex;

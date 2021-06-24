@@ -9,17 +9,20 @@ export default function LoginPage() {
     const [password, setPassword] = useState("")
     const [disabled, setDisabled] = useState(false);
     const history = useHistory();
+    
+    if(localStorage.token){
+        history.push('/transactions')
+    }
 
     function login(e){
         e.preventDefault();
         setDisabled(true);
-
+        
         const body = {email, password}
         const request = axios.post("http://localhost:4000/", body)
 
         request.then( (response) => {
-            const userSerialized = JSON.stringify(response.data);
-            localStorage.setItem("token",userSerialized);
+            localStorage.setItem("token",response.data);
             history.push("/transactions")
         })
 
