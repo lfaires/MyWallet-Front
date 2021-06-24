@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import axios from 'axios'
 import Modal from 'react-modal'
 import styled from 'styled-components'
 
-export default function DeleteBox({isOpen, setIsOpen}) {
-
+export default function DeleteBox({isOpen, setIsOpen, transaction, getTransactions}) {
+    const { token } = localStorage
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    const { id } = transaction
     Modal.setAppElement('.root')
 
     function closeModal(){
@@ -12,16 +14,19 @@ export default function DeleteBox({isOpen, setIsOpen}) {
 
     function deleteTransaction(e){
       e.preventDefault();
-      alert("irrá")
+      const request = axios.delete(`http://localhost:4000/transaction/${id}`,config);
+
+      request.then( () => {
+        getTransactions()
+        setIsOpen(false)
+      })
     }
 
     return(
        <Modal
         isOpen={isOpen}
-        //onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
       >
         <Title>Você deseja deletar esta transação?</Title>
         <Form onSubmit={deleteTransaction}>
@@ -43,7 +48,6 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
   },
 };
-
 const Title = styled.h2`
   color: #fff;
   font-weight: 700;

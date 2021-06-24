@@ -29,7 +29,7 @@ export default function AddTransactionPage(){
 
     return (
         <Container>
-            <Header>Nova {typeText}</Header>
+            <Top>Nova {typeText}</Top>
             <Form onSubmit={saveTransaction}>
                 <Input 
                     placeholder="Valor" 
@@ -54,7 +54,7 @@ export default function AddTransactionPage(){
 const Container = styled.div`
     margin: 25px;
 `
-const Header = styled.header`
+const Top = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;

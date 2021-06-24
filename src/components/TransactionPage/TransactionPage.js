@@ -13,7 +13,6 @@ export default function TransactionPage() {
     const [transactions, setTransactions] = useState([])
     const [total, setTotal] = useState(0)
     const [user, setUser] = useState("")
-    const [openDeleteBox, setOpenDeleteBox] = useState(false)
     const { token } = localStorage
     const config = { headers: { Authorization: `Bearer ${token}` } };
     const types = ['revenue', 'expense']
@@ -46,7 +45,6 @@ export default function TransactionPage() {
 
     return (
         <Container>
-            {openDeleteBox ? <DeleteBox isOpen={openDeleteBox} setIsOpen={setOpenDeleteBox}/> : null}
             <Top user={user} config={config}/>
             <Body noTransactions={transactions.length === 0 ? true : false}>
                 {transactions.length ===0 ? 
@@ -54,7 +52,7 @@ export default function TransactionPage() {
                 <>
                     <ContainerTransactions >
                         {transactions.map( transaction => {
-                            return <Transactions transaction={transaction} setIsOpen={setOpenDeleteBox} />
+                            return <Transactions transaction={transaction} getTransactions={getTransactions}/>
                         })}
                     </ContainerTransactions>
                     <ContainerBalance>
