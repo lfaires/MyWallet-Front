@@ -3,9 +3,11 @@ import styled from 'styled-components'
 import { BiExit } from 'react-icons/bi'
 import {IoAddCircleOutline, IoRemoveCircleOutline} from 'react-icons/io5'
 import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
+
 import { useHistory } from 'react-router-dom'
 import DeleteBox from './DeleteBox'
+import Transactions from './Transactions'
+import Balance from './Balance'
 
 export default function TransactionPage() {
     const [transactions, setTransactions] = useState([])
@@ -60,23 +62,16 @@ export default function TransactionPage() {
                 <ExitIcon onClick={logout}/> 
             </Header>
             <Body noTransactions={transactions.length === 0 ? true : false}>
-            {transactions.length ===0 ? <Text >Não há registros de <br/> entrada ou saída</Text> : <>
-            <ContainerTransactions >
-                    {transactions.map( transaction => { 
-                    return <Transaction key={transaction.id} onClick={() => setOpenDeleteBox(true)}>
-                        <DateDescription>
-                            <Date>{dayjs(transaction.created_at).format("DD/MM")}</Date>
-                            <Description>{transaction.description}</Description>
-                        </DateDescription>
-                        <Value type={transaction.category}>{((Math.abs(transaction.value)/100).toFixed(2)).toString().replace(".",",")}</Value>
-                    </Transaction>
+                {transactions.length ===0 ? <Text >Não há registros de <br/> entrada ou saída</Text> : <>
+                <ContainerTransactions >
+                    {transactions.map( transaction => {
+                        return <Transactions transaction={transaction} setIsOpen={setOpenDeleteBox} />
                     })}
                 </ContainerTransactions>
                 <ContainerBalance>
-                    <Balance>SALDO</Balance>
-                    <Total type={total >= 0 ? 'revenue' : ""}>{((Math.abs(total)).toFixed(2)).toString().replace(".",",")}</Total>
+                    <Balance total={total}/>
                 </ContainerBalance>
-                </>}
+                    </>}
             </Body>
             <Footer>
                 <AddRevenue onClick={() => history.push('/add-transaction/revenue')}>
@@ -100,6 +95,13 @@ const Header = styled.header`
     justify-content: space-between;
     align-items: center;
     height: 35px;
+`
+const ContainerTransactions = styled.ul`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow-y: scroll;
 `
 const Greeting = styled.p`
     font-weight: 700;
@@ -127,46 +129,10 @@ const Text = styled.p`
     color: #868686;
     font-size: 20px;
 `
-const ContainerTransactions = styled.ul`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    overflow-y: scroll;
-`
+
 const ContainerBalance = styled.div`
     display: flex;
     justify-content: space-between;
-`
-const Balance = styled.div`
-    color: #000;
-    font-weight: 700;
-    font-size: 17px;
-`
-const Total = styled.div`
-    color: ${props => props.type === 'revenue' ? '#03ac00' : '#c70000'};
-`
-const DateDescription = styled.div`
-    display: flex;
-    justify-content: space-between;
-`
-const Transaction = styled.li`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
-    font-size: 16px;
-    cursor: pointer;
-`
-const Date = styled.div`
-    color: #c6c6c6;
-`
-const Description = styled.div`
-    margin: 0 10px;
-    color:#000;
-`
-const Value = styled.div`
-    color: ${props => props.type === 'revenue' ? '#03ac00' : '#c70000'};
 `
 const Footer = styled.div`
     display: flex;
