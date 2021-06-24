@@ -6,7 +6,7 @@ export default function Buttons({category}) {
     const history = useHistory()
     
     return(
-        <AddTransaction onClick={() => history.push(`/add-transaction/${category}`)}>
+        <AddTransaction onClick={() => history.push(`/transaction/${category}`)}>
             {category === 'revenue' ? <AddIcon /> : <RemoveIcon/>}
             <Title>Nova <br/> {category === 'revenue' ? 'entrada' : 'saída'}</Title>
         </AddTransaction>

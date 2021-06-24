@@ -19,7 +19,7 @@ export default function AddTransactionPage(){
         setDisabled(true);
 
         const body ={value, description}
-        const request = axios.post(`http://localhost:4000/add-transaction/${type}`, body, config)
+        const request = axios.post(`http://localhost:4000/transaction/${type}`, body, config)
         
        request.then( () => {
            history.push('/transactions')
