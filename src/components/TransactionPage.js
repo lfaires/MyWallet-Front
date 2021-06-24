@@ -153,6 +153,7 @@ const Transaction = styled.li`
     width: 100%;
     margin-bottom: 20px;
     font-size: 16px;
+    cursor: pointer;
 `
 const Date = styled.div`
     color: #c6c6c6;
