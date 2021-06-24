@@ -1,11 +1,12 @@
 import axios from 'axios'
 import styled from 'styled-components'
-import { BiExit } from 'react-icons/bi'
+
 import {IoAddCircleOutline, IoRemoveCircleOutline} from 'react-icons/io5'
 import { useEffect, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 import DeleteBox from './DeleteBox'
+import Headers from './Headers'
 import Transactions from './Transactions'
 import Balance from './Balance'
 
@@ -44,23 +45,10 @@ export default function TransactionPage() {
         request.catch((error) => console.log(error))
     }
 
-    function logout() {
-        const request = axios.post('http://localhost:4000/sign-out',{}, config)
- 
-        request.then( () => {
-            localStorage.removeItem('token');
-            history.push("/")
-        })
-        
-    }
-
     return (
         <Container>
             {openDeleteBox ? <DeleteBox isOpen={openDeleteBox} setIsOpen={setOpenDeleteBox}/> : null}
-            <Header>
-                <Greeting>Olá, {user}</Greeting>
-                <ExitIcon onClick={logout}/> 
-            </Header>
+            <Headers user={user} config={config}/>
             <Body noTransactions={transactions.length === 0 ? true : false}>
                 {transactions.length ===0 ? <Text >Não há registros de <br/> entrada ou saída</Text> : <>
                 <ContainerTransactions >
@@ -90,12 +78,7 @@ export default function TransactionPage() {
 const Container = styled.div`
     margin: 25px;
 `
-const Header = styled.header`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 35px;
-`
+
 const ContainerTransactions = styled.ul`
     display: flex;
     flex-direction: column;
@@ -103,15 +86,7 @@ const ContainerTransactions = styled.ul`
     align-items: center;
     overflow-y: scroll;
 `
-const Greeting = styled.p`
-    font-weight: 700;
-    font-size: 26px;
-`
-const ExitIcon = styled(BiExit)`
-    color: #fff;
-    font-size: 30px;
-    cursor: pointer;
-`
+
 const Body = styled.div`
     display: flex;
     flex-direction: column;
