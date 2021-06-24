@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useState } from "react"
 import { useHistory, useParams } from "react-router-dom";
 import styled from 'styled-components'
+import { IoReturnUpBack } from 'react-icons/io5'
 
 export default function AddTransactionPage(){
     const { type } = useParams();
@@ -29,7 +30,10 @@ export default function AddTransactionPage(){
 
     return (
         <Container>
-            <Header>Nova {typeText}</Header>
+            <TopContainer>
+                <Top>Nova {typeText}</Top>
+                <ReturnIcon onClick={() => history.push("/transactions")}/>
+            </TopContainer>
             <Form onSubmit={saveTransaction}>
                 <Input 
                     placeholder="Valor" 
@@ -54,7 +58,11 @@ export default function AddTransactionPage(){
 const Container = styled.div`
     margin: 25px;
 `
-const Header = styled.header`
+const TopContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+const Top = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,5 +97,10 @@ const Button = styled.button`
     color: #fff;
     font-size: 20px;
     font-weight: 700;
+    cursor: pointer;
+`
+const ReturnIcon = styled(IoReturnUpBack)`
+    color: #fff;
+    font-size: 30px;
     cursor: pointer;
 `

@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import GlobalStyle from '../styles/GlobalStyle';
 import LoginPage from './LoginPage'
 import SignUpPage from './SignUpPage'
-import TransactionPage from './TransactionPage';
+import TransactionPage from './TransactionPage/TransactionPage';
 import AddTransactionPage from './AddTransactionPage';
 
 export default function App() {
