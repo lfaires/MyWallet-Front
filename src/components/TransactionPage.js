@@ -5,11 +5,13 @@ import {IoAddCircleOutline, IoRemoveCircleOutline} from 'react-icons/io5'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { useHistory } from 'react-router-dom'
+import DeleteBox from './DeleteBox'
 
 export default function TransactionPage() {
     const [transactions, setTransactions] = useState([])
     const [total, setTotal] = useState(0)
     const [user, setUser] = useState("")
+    const [openDeleteBox, setOpenDeleteBox] = useState(false)
     const history = useHistory();
     const { token } = localStorage
     const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -52,6 +54,7 @@ export default function TransactionPage() {
 
     return (
         <Container>
+            {openDeleteBox ? <DeleteBox isOpen={openDeleteBox} setIsOpen={setOpenDeleteBox}/> : null}
             <Header>
                 <Greeting>Olá, {user}</Greeting>
                 <ExitIcon onClick={logout}/> 
@@ -60,7 +63,7 @@ export default function TransactionPage() {
             {transactions.length ===0 ? <Text >Não há registros de <br/> entrada ou saída</Text> : <>
             <ContainerTransactions >
                     {transactions.map( transaction => { 
-                    return <Transaction key={transaction.id}>
+                    return <Transaction key={transaction.id} onClick={() => setOpenDeleteBox(true)}>
                         <DateDescription>
                             <Date>{dayjs(transaction.created_at).format("DD/MM")}</Date>
                             <Description>{transaction.description}</Description>
