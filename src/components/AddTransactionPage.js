@@ -32,7 +32,7 @@ export default function AddTransactionPage(){
         <Container>
             <TopContainer>
                 <Top>Nova {typeText}</Top>
-                <ReturnIcon />
+                <ReturnIcon onClick={() => history.push("/transactions")}/>
             </TopContainer>
             <Form onSubmit={saveTransaction}>
                 <Input 
