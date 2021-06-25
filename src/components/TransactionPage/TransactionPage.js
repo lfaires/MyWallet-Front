@@ -23,6 +23,7 @@ export default function TransactionPage() {
 
         request.then( response => {
             if(response.data.name){
+                setTransactions([])
                 setUser(response.data.name)
                 return
             }
@@ -30,7 +31,7 @@ export default function TransactionPage() {
             setTransactions(response.data)
             const values = data.map( item => {
                 if(item.category === 'expense'){
-                    item.value = -item.value
+                    return -item.value
                 } 
                 return item.value
             })

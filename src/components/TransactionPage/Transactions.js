@@ -13,7 +13,7 @@ export default function Transactions({transaction, getTransactions}) {
                 <Date>{dayjs(transaction.created_at).format("DD/MM")}</Date>
                 <Description>{transaction.description}</Description>
             </DateDescription>
-            <Value type={transaction.category}>{(Math.abs(transaction.value/100).toFixed(2)).toString().replace(".",",")}</Value>
+            <Value type={transaction.category}>{((transaction.value/100).toFixed(2)).toString().replace(".",",")}</Value>
         </Transaction>
         </>
     )
