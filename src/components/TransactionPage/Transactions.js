@@ -37,6 +37,9 @@ const Date = styled.div`
 const Description = styled.div`
     margin: 0 10px;
     color:#000;
+    word-break: break-all;
+    display: flex;
+    text-align: justify;
 `
 const Value = styled.div`
     color: ${props => props.type === 'revenue' ? '#03ac00' : '#c70000'};

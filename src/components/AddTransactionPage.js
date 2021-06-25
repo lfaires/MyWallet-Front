@@ -25,7 +25,10 @@ export default function AddTransactionPage(){
            history.push('/transactions')
        })
 
-       request.catch( () => alert("deu ruim"))
+       request.catch( () => {
+           alert("deu ruim")
+           setDisabled(false)
+        })
     }
 
     return (
@@ -46,7 +49,7 @@ export default function AddTransactionPage(){
                     placeholder="Descrição" 
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    maxLength={21}
+                    maxLength={30}
                     required
                     disabled={disabled}
                 />

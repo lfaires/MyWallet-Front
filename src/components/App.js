@@ -22,7 +22,7 @@ export default function App() {
                 <Route path="/transactions" exact>
                     <TransactionPage />
                 </Route>
-                <Route path="/add-transaction/:type" exact>
+                <Route path="/transaction/:type" exact>
                     <AddTransactionPage />
                 </Route>        
             </Switch>
