@@ -3,11 +3,14 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineEyeInvisible } from 'react-icons/ai'
+import MsgErrorBox from './Modal/MsgErrorBox';
 
 export default function LoginPage() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [disabled, setDisabled] = useState(false);
+    const [isOpen, setIsOpen] = useState(false)
+    const [status, setStatus] = useState("")
     const history = useHistory();
     
     if(localStorage.token){
@@ -28,15 +31,14 @@ export default function LoginPage() {
 
         request.catch( (error) => {
             setDisabled(false);
-            if (error.response.status === 401) {
-                alert("Email ou senha incorretos!"); //mudar pra dialog box
-                return;
-            }
+            const errorStatus = error.response.status === 401 || error.response.status === 404 ? setStatus('sign-in') : "";
+            setIsOpen(true);
         })
     }
 
     return(
         <Container>
+            {status !== "" ? <MsgErrorBox isOpen={isOpen} setIsOpen={setIsOpen} status={status}/> : null}
             <Header>My Wallet</Header>
             <Form onSubmit={login}>
                 <Input 

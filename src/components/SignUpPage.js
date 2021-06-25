@@ -2,6 +2,8 @@ import axios from 'axios'
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components'
+import ConfirmationBox from './Modal/ConfirmationBox';
+import MsgErrorBox from './Modal/MsgErrorBox';
 
 export default function SignUpPage() {
     const [name, setName] = useState("")
@@ -9,6 +11,8 @@ export default function SignUpPage() {
     const [password, setPassword] = useState("")
     const [repeatPassword, setRepeatPassword] = useState("")
     const [disabled, setDisabled] = useState(false);
+    const [isOpen, setIsOpen] = useState(false)
+    const [status, setStatus] = useState("")
     const history = useHistory();
 
     function signUp(e){
@@ -19,21 +23,20 @@ export default function SignUpPage() {
         const request = axios.post("http://localhost:4000/sign-up", userData)
         
         request.then( () => {
-            alert("Email cadastrado com sucesso!")
-            history.push("/")
+            setIsOpen(true)
         })
 
         request.catch( (error) => {
             setDisabled(false);
-            if (error.response.status === 400) {
-                alert("O email inserido já está cadastrado!"); //mudar pra dialog box
-                return;
-            }
+            error.response.status === 400 ? setStatus(400) : setStatus(409)
+            setIsOpen(true) 
         })
     }
 
     return (
         <Container>
+            {status !== "" ? <MsgErrorBox isOpen={isOpen} setIsOpen={setIsOpen} status={status}/> : null}
+            {isOpen && status === "" ? <ConfirmationBox isOpen={isOpen} setIsOpen={setIsOpen} /> : null}
             <Header>My Wallet</Header>
             <Form onSubmit={signUp}>
                 <Input 
