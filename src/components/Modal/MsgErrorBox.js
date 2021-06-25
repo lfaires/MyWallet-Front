@@ -18,7 +18,7 @@ export default function MsgErrorBox({status, isOpen, setIsOpen}){
         onRequestClose={closeModal}
         style={customStyles}
       >
-        <Title>{status === 409 ? 'O email inserido já está cadastrado!' : (status === 400 ?'Preencha com dados válidos!' : ( status === 'sign-in' ? 'Email ou senha incorretos!' : 'Ocorreu algum problema, tente novamente!'))}</Title>
+        <Title>{status === 409 ? 'O email inserido já possui cadastro no My Wallet!' : (status === 400 ?'Preencha com dados válidos!' : ( status === 'sign-in' ? 'Email ou senha incorretos!' : 'Ocorreu algum problema, tente novamente!'))}</Title>
         <Form onSubmit={stayOnPage}>
           <Button>Ok</Button>
         </Form>

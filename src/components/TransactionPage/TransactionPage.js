@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import { useEffect, useState } from 'react'
 
-import DeleteBox from './DeleteBox'
 import Top from './Top'
 import Transactions from './Transactions'
 import Balance from './Balance'
@@ -13,7 +12,7 @@ export default function TransactionPage() {
     const [transactions, setTransactions] = useState([])
     const [total, setTotal] = useState(0)
     const [user, setUser] = useState("")
-    const { token } = localStorage
+    const  {token}  = localStorage
     const config = { headers: { Authorization: `Bearer ${token}` } };
     const types = ['revenue', 'expense']
 
@@ -27,8 +26,9 @@ export default function TransactionPage() {
                 setUser(response.data.name)
                 return
             }
+            const data = [...response.data]
             setTransactions(response.data)
-            const values = response.data.map( item => {
+            const values = data.map( item => {
                 if(item.category === 'expense'){
                     item.value = -item.value
                 } 

@@ -14,7 +14,7 @@ export default function AddTransactionPage(){
     const [status, setStatus] = useState("")
     const history = useHistory()
     const typeText = (type === 'revenue' ? 'entrada' : 'saída');
-    const { token } = localStorage
+    const { token }  = localStorage
     const config = { headers: { Authorization: `Bearer ${token}` } };
 
     function saveTransaction(e){

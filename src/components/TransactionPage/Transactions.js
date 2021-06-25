@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 import { useState } from 'react'
-import DeleteBox from './DeleteBox'
+import DeleteBox from '../Modal/DeleteBox'
 
 export default function Transactions({transaction, getTransactions}) {
     const [openDeleteBox, setOpenDeleteBox] = useState(false)
@@ -13,7 +13,7 @@ export default function Transactions({transaction, getTransactions}) {
                 <Date>{dayjs(transaction.created_at).format("DD/MM")}</Date>
                 <Description>{transaction.description}</Description>
             </DateDescription>
-            <Value type={transaction.category}>{((Math.abs(transaction.value)/100).toFixed(2)).toString().replace(".",",")}</Value>
+            <Value type={transaction.category}>{(Math.abs(transaction.value/100).toFixed(2)).toString().replace(".",",")}</Value>
         </Transaction>
         </>
     )
@@ -37,9 +37,10 @@ const Date = styled.div`
 const Description = styled.div`
     margin: 0 10px;
     color:#000;
-    word-break: break-all;
+    word-wrap: break-word;
     display: flex;
-    text-align: justify;
+    text-align: left;
+    line-height: 15px;
 `
 const Value = styled.div`
     color: ${props => props.type === 'revenue' ? '#03ac00' : '#c70000'};

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { isValidElement, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineEyeInvisible } from 'react-icons/ai'
@@ -25,7 +25,7 @@ export default function LoginPage() {
         const request = axios.post("http://localhost:4000/sign-in", body)
 
         request.then( (response) => {
-            localStorage.setItem("token",response.data);
+            localStorage.setItem("token",response.data.token);
             history.push("/transactions")
         })
 
