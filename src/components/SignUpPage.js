@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components'
+import ConfirmationBox from './ConfirmationBox';
 
 export default function SignUpPage() {
     const [name, setName] = useState("")
@@ -9,6 +10,7 @@ export default function SignUpPage() {
     const [password, setPassword] = useState("")
     const [repeatPassword, setRepeatPassword] = useState("")
     const [disabled, setDisabled] = useState(false);
+    const [isOpen, setIsOpen] = useState(false)
     const history = useHistory();
 
     function signUp(e){
@@ -19,8 +21,7 @@ export default function SignUpPage() {
         const request = axios.post("http://localhost:4000/sign-up", userData)
         
         request.then( () => {
-            alert("Email cadastrado com sucesso!")
-            history.push("/")
+            setIsOpen(true)
         })
 
         request.catch( (error) => {
@@ -34,6 +35,7 @@ export default function SignUpPage() {
 
     return (
         <Container>
+            {isOpen ? <ConfirmationBox isOpen={isOpen} setIsOpen={setIsOpen} /> : null}
             <Header>My Wallet</Header>
             <Form onSubmit={signUp}>
                 <Input 
