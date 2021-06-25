@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useHistory, useParams } from "react-router-dom";
 import styled from 'styled-components'
 import { IoReturnUpBack } from 'react-icons/io5'
-import ErrorBox from './ErrorBox';
+import MsgErrorBox from './Modal/MsgErrorBox';
 
 export default function AddTransactionPage(){
     const { type } = useParams();
@@ -11,6 +11,7 @@ export default function AddTransactionPage(){
     const [description, setDescription] = useState("")
     const [disabled, setDisabled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [status, setStatus] = useState("")
     const history = useHistory()
     const typeText = (type === 'revenue' ? 'entrada' : 'saída');
     const { token } = localStorage
@@ -30,12 +31,13 @@ export default function AddTransactionPage(){
        request.catch( () => {
            setIsOpen(true)
            setDisabled(false)
+           setStatus(401)
         })
     }
 
     return (
         <Container>
-            {isOpen ? <ErrorBox isOpen={isOpen} setIsOpen={setIsOpen} setDisabled={setDisabled} add={'add'}/> : null}
+            {isOpen ? <MsgErrorBox isOpen={isOpen} setIsOpen={setIsOpen} status={status}/> : null}
             <TopContainer>
                 <Top>Nova {typeText}</Top>
                 <ReturnIcon onClick={() => history.push("/transactions")}/>

@@ -17,7 +17,7 @@ export default function ConfirmationBox({isOpen, setIsOpen}) {
     }
     return( 
         <Modal
-        isOpen={true}
+        isOpen={isOpen}
         onRequestClose={closeModal}
         style={customStyles}
       >
