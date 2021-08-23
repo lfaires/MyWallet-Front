@@ -1,6 +1,6 @@
 # My Wallet
 
-This app is a simple financial manager. You can add or remove your expenses and revenues.
+A Front-end project written in React that allows you to manage your expenses and revenues.
 
 <img src="./src/assets/images/myWallet.gif" />
 
